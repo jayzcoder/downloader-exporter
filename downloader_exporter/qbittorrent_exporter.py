@@ -27,6 +27,7 @@ class QbittorrentMetricsCollector:
         username: str,
         password: str,
         verify_ssl: bool = False,
+        torrent_list_en: bool = False,
         **kwargs,
     ):
         self.name = name
@@ -34,6 +35,7 @@ class QbittorrentMetricsCollector:
         self.username = username
         self.password = password
         self.verify_ssl = verify_ssl
+        self.torrent_list_en = torrent_list_en
 
     def describe(self):
         return [AttrDict({"name": self.name, "type": "info"})]
@@ -84,7 +86,7 @@ class QbittorrentMetricsCollector:
     def get_metrics(self):
         metrics = []
         metrics.extend(self.get_status_metrics())
-        metrics.extend(self.get_torrent_metrics())
+        if self.torrent_list_en : metrics.extend(self.get_torrent_metrics())
 
         return metrics
 

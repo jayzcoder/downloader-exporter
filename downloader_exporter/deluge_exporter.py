@@ -14,13 +14,14 @@ DEFAULT_PORT = 58846
 
 
 class DelugeMetricsCollector:
-    def __init__(self, name: str, host: str, username: str, password: str, **kwargs):
+    def __init__(self, name: str, host: str, username: str, password: str, torrent_list_en: bool = False, **kwargs):
         self.name = name
         self.host = host
         self.username = username
         self.password = password
         self.version = ""
         self.lt_version = ""
+        self.torrent_list_en = torrent_list_en
 
     def call(self, client, method, *args, **kwargs):
         try:
@@ -75,7 +76,7 @@ class DelugeMetricsCollector:
         metrics = []
         with self.client as client:
             metrics.extend(self.get_status_metrics(client))
-            metrics.extend(self.get_torrent_metrics(client))
+            if self.torrent_list_en : metrics.extend(self.get_torrent_metrics(client))
         return metrics
 
     def get_status_metrics(self, client):

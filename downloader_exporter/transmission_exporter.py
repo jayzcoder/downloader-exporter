@@ -21,6 +21,7 @@ class TransmissionMetricsCollector:
         username: str,
         password: str,
         timeout: int = 60,
+        torrent_list_en: bool = False,
         **kwargs,
     ):
         self.name = name
@@ -29,6 +30,7 @@ class TransmissionMetricsCollector:
         self.password = password
         self.timeout = timeout
         self.version = None
+        self.torrent_list_en = torrent_list_en
 
     @property
     def client(self):
@@ -73,7 +75,7 @@ class TransmissionMetricsCollector:
     def get_metrics(self):
         metrics = []
         metrics.extend(self.get_status_metrics())
-        metrics.extend(self.get_torrent_metrics())
+        if self.torrent_list_en : metrics.extend(self.get_torrent_metrics())
         return metrics
 
     def get_status_metrics(self):
